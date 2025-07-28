@@ -7,6 +7,7 @@ import ReviewModel from "../../models/ReviewModel";
 import { LatestReviews } from "./LatestReviews";
 import { useAuth0 } from "@auth0/auth0-react";
 import { get } from "http";
+import ReviewRequestModel from "../../models/ReviewRequestModel";
 
 export const BookCheckoutPage = () => {
 
@@ -34,7 +35,7 @@ export const BookCheckoutPage = () => {
 
     const bookId = (window.location.pathname).split('/')[2];
 
-    // Fetch a book
+    // Use effect for Fetch a book
     useEffect(() => {
         const fetchBook = async () => {
 
@@ -68,7 +69,7 @@ export const BookCheckoutPage = () => {
         })
     }, [isCheckedOut, getAccessTokenSilently, bookId]);
 
-    // It's calling our new reviews
+    // Use effect for Book reviews
     useEffect(() => {
         const fetchBookReviews = async () => {
             const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByBookId?bookId=${bookId}`;
@@ -114,36 +115,38 @@ export const BookCheckoutPage = () => {
             setHttpError(error.message);
         })
 
-    }, [isReviewLeft, bookId]);  // creating empty array
+    }, [isReviewLeft, bookId]);  // creating an empty array
 
-    // useEffect(() => {
-    //     const fetchUserReviewBook = async () => {
-    //         if (isAuthenticated) {
-    //             // const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
-    //             const accessToken = await getAccessTokenSilently();
-    //             const url = `http://localhost:8080/api/reviews/secure/user/book?bookId=${bookId}`;
+    // Use effect for Single review for a user
+    useEffect(() => {
+        const fetchUserReviewBook = async () => {
+            if (isAuthenticated) {
+                // const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
+                const accessToken = await getAccessTokenSilently();
+                const url = `http://localhost:8080/api/reviews/secure/user/book?bookId=${bookId}`;
 
-    //             const requestOptions = {
-    //                 method: 'GET',
-    //                 headers: {
-    //                     Authorization: `Bearer ${accessToken}`,
-    //                     'Content-Type': 'application/json'
-    //                 }
-    //             };
-    //             const userReview = await fetch(url, requestOptions);
-    //             if (!userReview.ok) {
-    //                 throw new Error('Something went wrong');
-    //             }
-    //             const userReviewResponseJson = await userReview.json();
-    //             setIsReviewLeft(userReviewResponseJson);
-    //         }
-    //         setIsLoadingUserReview(false);
-    //     }
-    //     fetchUserReviewBook().catch((error: any) => {
-    //         setIsLoadingUserReview(false);
-    //         setHttpError(error.message);
-    //     })
-    // }, [bookId, isAuthenticated, getAccessTokenSilently]);
+                const requestOptions = {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                const userReview = await fetch(url, requestOptions);
+                if (!userReview.ok) {
+                    throw new Error('Something went wrong');
+                }
+                const userReviewResponseJson = await userReview.json();
+                setIsReviewLeft(userReviewResponseJson);
+            }
+            setIsLoadingUserReview(false);
+        }
+        fetchUserReviewBook().catch((error: any) => {
+            setIsLoadingUserReview(false);
+            setHttpError(error.message);
+        })
+    }, [bookId, isAuthenticated, getAccessTokenSilently]);
 
     useEffect(() => {
         const fetchUserCurrentLoansCount = async () => {
@@ -205,7 +208,7 @@ export const BookCheckoutPage = () => {
 
     // for both useEffect Api-s are complete, before we go 
     // ahead and start renderring the rest of application
-    if (isLoading || isLoadingReview || isLoadingCurrentLoansCount || isLoadingBookCheckedOut) {  //  || isLoadingUserReview
+    if (isLoading || isLoadingReview || isLoadingCurrentLoansCount || isLoadingBookCheckedOut || isLoadingUserReview) {
         return (
             <SpinnerLoading />
         )
@@ -239,29 +242,31 @@ export const BookCheckoutPage = () => {
         setIsCheckedOut(true);
     }
 
-    // async function submitReview(starInput: number, reviewDescription: string) {
-    //     let bookId: number = 0;
-    //     if (book?.id) {
-    //         bookId = book.id;
-    //     }
+    async function submitReview(starInput: number, reviewDescription: string) {
+        let bookId: number = 0;
+        // We grab the book id
+        if (book?.id) {  // To know fact that there is a book id
+            bookId = book.id;
+        }
 
-    //     const reviewRequestModel = new ReviewRequestModel(starInput, bookId, reviewDescription);
-    //     const url = `http://localhost:8080/api/reviews/secure`;
-    //     const accessToken = await getAccessTokenSilently();
-    //     const requestOptions = {
-    //         method: 'POST',
-    //         headers: {
-    //             Authorization: `Bearer ${accessToken}`,
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(reviewRequestModel)
-    //     };
-    //     const returnResponse = await fetch(url, requestOptions);
-    //     if (!returnResponse.ok) {
-    //         throw new Error('Something went wrong!');
-    //     }
-    //     setIsReviewLeft(true);
-    // }
+        const reviewRequestModel = new ReviewRequestModel(starInput, bookId, reviewDescription);
+        const url = `http://localhost:8080/api/reviews/secure`;
+        const accessToken = await getAccessTokenSilently();
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reviewRequestModel)   // We need body bcs it's a post request
+        };
+        // We call here the API
+        const returnResponse = await fetch(url, requestOptions);
+        if (!returnResponse.ok) {
+            throw new Error('Something went wrong!');
+        }
+        setIsReviewLeft(true);
+    }
     
     return (
         <div>
@@ -286,8 +291,7 @@ export const BookCheckoutPage = () => {
                     </div>
                     <CheckoutAndReviewBox book={book} mobile={false} currentLoansCount={currentLoansCount} 
                         isAuthenticated={isAuthenticated} isCheckedOut={isCheckedOut} 
-                        checkoutBook={checkoutBook}  // isReviewLeft={isReviewLeft} submitReview={submitReview}
-                        />
+                        checkoutBook={checkoutBook} isReviewLeft={isReviewLeft} submitReview={submitReview}/>
                 </div>
                 <hr/>
                 <LatestReviews reviews={reviews} bookId={book?.id} mobile={false}/>
@@ -313,8 +317,7 @@ export const BookCheckoutPage = () => {
                 </div>
                 <CheckoutAndReviewBox book={book} mobile={true} currentLoansCount={currentLoansCount} 
                     isAuthenticated={isAuthenticated} isCheckedOut={isCheckedOut} 
-                    checkoutBook={checkoutBook}  // isReviewLeft={isReviewLeft} submitReview={submitReview}
-                    />
+                    checkoutBook={checkoutBook} isReviewLeft={isReviewLeft} submitReview={submitReview}/>
                 <hr/>
                 <LatestReviews reviews={reviews} bookId={book?.id} mobile={true}/>
             </div>
