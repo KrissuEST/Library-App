@@ -25,7 +25,7 @@ export const LatestReviews: React.FC<{
                             </Link>
                         </div>
                     </>
-                    :
+                    :    // If there is no reviews in the list
                     <div className='m-3'>
                         <p className='lead'>
                             Currently there are no reviews for this book

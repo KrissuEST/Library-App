@@ -1,4 +1,10 @@
+import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from "react-router-dom";
+
 export const Heros = () => {
+
+    const { isAuthenticated } = useAuth0();
+
     return (
         <div>
             <div className='d-none d-lg-block'>
@@ -10,11 +16,16 @@ export const Heros = () => {
                         <div className='ml-2'>
                             <h1>What have you been reading?</h1>
                             <p className='lead'>
-                                Library team would love to know what you have been reading.
+                                The Library team would love to know what you have been reading.
                                 Whether it is to learn a new skill or grow within one,
                                 we will be able to provide the top content for you!
                             </p>
-                            <a className='btn main-color btn-lg text-white' href='#'>Sign up</a>
+                            {isAuthenticated ? 
+                                <Link type='button' className='btn main-color btn-lg text-white'
+                                    to='search'>Explore top books </Link>
+                                :
+                                <Link className='btn main-color btn-lg text-white' to='/login'>Sign up</Link>
+                            }  
                         </div>
                     </div>
                 </div>
@@ -36,7 +47,7 @@ export const Heros = () => {
                     </div>
                 </div>
             </div>
-            {/* Mobile Heros*/}
+            {/* Mobile Heros view */}
             <div className='d-lg-none'>
                 <div className='container'>
                     <div className='m-2'>
@@ -48,7 +59,12 @@ export const Heros = () => {
                                 Whether it is to learn a new skill or grow within one,
                                 we will be able to provide the top content for you!
                             </p>
-                            <a className='btn main-color btn-lg text-white' href='#'>Sign up</a>
+                            {isAuthenticated ? 
+                                <Link type='button' className='btn main-color btn-lg text-white'
+                                    to='search'>Explore top books</Link>
+                                :
+                                <Link className='btn main-color btn-lg text-white' to='/login'>Sign up</Link>
+                            }
                         </div>
                     </div>
                     <div className='m-2'>
