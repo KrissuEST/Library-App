@@ -2,7 +2,7 @@ package com.kristjan.springbootlibrary.service;
 
 import com.kristjan.springbootlibrary.dao.ReviewRepository;
 import com.kristjan.springbootlibrary.entity.Review;
-import com.kristjan.springbootlibrary.requestmodels.ReviewRequest;
+import com.kristjan.springbootlibrary.request_models.ReviewRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

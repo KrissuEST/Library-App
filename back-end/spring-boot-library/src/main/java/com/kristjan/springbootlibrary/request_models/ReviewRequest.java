@@ -1,4 +1,4 @@
-package com.kristjan.springbootlibrary.requestmodels;
+package com.kristjan.springbootlibrary.request_models;
 
 import lombok.Data;
 import java.util.Optional;

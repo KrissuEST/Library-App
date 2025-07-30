@@ -1,6 +1,6 @@
 package com.kristjan.springbootlibrary.controller;
 
-import com.kristjan.springbootlibrary.requestmodels.ReviewRequest;
+import com.kristjan.springbootlibrary.request_models.ReviewRequest;
 import com.kristjan.springbootlibrary.service.ReviewService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

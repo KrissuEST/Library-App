@@ -16,6 +16,7 @@ import { Auth0Provider, withAuthenticationRequired } from '@auth0/auth0-react';
 import { auth0Config } from './lib/auth0Config';
 import LoginPage from './Auth/LoginPage';
 import { ReviewListPage } from './layouts/BookCheckoutPage/ReviewListPage/ReviewListPage';
+import { ShelfPage } from './layouts/ShelfPage/ShelfPage';
 
 const Auth0ProviderWithHistory = ({ children }: { children: React.ReactNode }) => {
   const history = useHistory();
@@ -66,6 +67,7 @@ export const App = () => {   //We make it to functional component, like all othe
             <BookCheckoutPage/>
           </Route>
           <Route path='/login' render={() => <LoginPage />} />
+          <SecureRoute path='/shelf' component={ShelfPage} />
         </Switch>
       </div>
       <Footer />
