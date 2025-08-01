@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 
 export const LibraryServices = () => {
 
-    const { isAuthenticated } = useAuth0();
+    const { isAuthenticated, loginWithRedirect } = useAuth0();
+
+    const handleLogin = () => {
+        loginWithRedirect();
+        window.location.assign("/");
+    };
 
     return (
         <div className='container my-5'>
@@ -22,9 +27,12 @@ export const LibraryServices = () => {
                             Library Services
                         </Link>   
                         :
-                        <Link className='btn main-color btn-lg text-white' to='/login'>
+                        <button className='btn main-color btn-lg text-white' onClick={handleLogin}>
                             Sign up
-                        </Link> 
+                        </button> 
+                        // <Link className='btn main-color btn-lg text-white' to='/login'>
+                        //     Sign up
+                        // </Link> 
                         }
                     </div>
                 </div>

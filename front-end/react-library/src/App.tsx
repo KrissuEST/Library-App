@@ -1,22 +1,19 @@
 import React from 'react';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './layouts/NavbarAndFooter/Navbar';
 import { Footer } from './layouts/NavbarAndFooter/Footer';
 import { HomePage } from './layouts/HomePage/HomePage';
 import { SearchBooksPage } from './layouts/SearchBooksPage/SearchBooksPage';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { BookCheckoutPage } from './layouts/BookCheckoutPage/BookCheckoutPage';
-
-// import { ReviewListPage } from './layouts/BookCheckoutPage/ReviewListPage/ReviewListPage';
-// import { ShelfPage } from './layouts/ShelfPage/ShelfPage';
-// import { MessagesPage } from './layouts/MessagesPage/MessagesPage';
-// import { ManageLibraryPage } from './layouts/ManageLibraryPage/ManageLibraryPage';
-
-import { Auth0Provider, withAuthenticationRequired } from '@auth0/auth0-react';
-import { auth0Config } from './lib/auth0Config';
-import LoginPage from './Auth/LoginPage';
 import { ReviewListPage } from './layouts/BookCheckoutPage/ReviewListPage/ReviewListPage';
 import { ShelfPage } from './layouts/ShelfPage/ShelfPage';
+import { MessagesPage } from './layouts/MessagesPage/MessagesPage';
+
+import { auth0Config } from './lib/auth0Config';
+import LoginPage from './layouts/Authentication/LoginPage';
+import { Auth0Provider, withAuthenticationRequired } from '@auth0/auth0-react';
+
 
 const Auth0ProviderWithHistory = ({ children }: { children: React.ReactNode }) => {
   const history = useHistory();
@@ -48,6 +45,7 @@ const SecureRoute = ({ component, path, ...args }: { component: React.ComponentT
 export const App = () => {   //We make it to functional component, like all others
   return (
     <div className='d-flex flex-column min-vh-100'>
+      <Auth0ProviderWithHistory>
       <Navbar/>
       <div className='flex-grow-1'>
         <Switch>
@@ -66,12 +64,15 @@ export const App = () => {   //We make it to functional component, like all othe
           <Route path='/checkout/:bookId'>
             <BookCheckoutPage/>
           </Route>
+
           <Route path='/login' render={() => <LoginPage />} />
-          <SecureRoute path='/shelf' component={ShelfPage} />
+          <SecureRoute path='/shelf' component={ShelfPage}/>
+          <SecureRoute path='/messages' component={MessagesPage}/>
+          
         </Switch>
       </div>
       <Footer />
-      {/* </Auth0ProviderWithHistory> */}
+      </Auth0ProviderWithHistory>
     </div>
   );
 }

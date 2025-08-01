@@ -3,6 +3,7 @@ package com.kristjan.springbootlibrary.controller;
 import com.kristjan.springbootlibrary.request_models.ReviewRequest;
 import com.kristjan.springbootlibrary.service.ReviewService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("http://localhost:3000")   // Helps to communicate with React application
@@ -21,7 +22,6 @@ public class ReviewController {
     public Boolean reviewBookByUser(@AuthenticationPrincipal Jwt jwt,
                                     @RequestParam Long bookId) throws Exception {
         String userEmail = jwt.getClaim("email");
-
         if (userEmail == null) {
             throw new Exception("User email is missing");
         }

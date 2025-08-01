@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
-import { SpinnerLoading } from "../Utils/SpinnerLoading";
+
 import { useEffect, useState } from "react";
+import { SpinnerLoading } from "../Utils/SpinnerLoading";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export const Navbar = () => {
@@ -29,7 +30,7 @@ export const Navbar = () => {
         logout({ logoutParams: { returnTo: window.location.origin } })
     };
 
-    const handleLogin =  () => {
+    const handleLogin = () => {
         loginWithRedirect();
         window.location.assign("/");
     };
@@ -66,7 +67,7 @@ export const Navbar = () => {
                     <ul className='navbar-nav ms-auto'>
                         {!isAuthenticated ?
                         <li className='nav-item m-1'>
-                            <button  className='btn btn-outline-light' onClick={handleLogin}>Sign in</button>
+                            <button className='btn btn-outline-light' onClick={handleLogin}>Sign in</button>
                         </li>
                         :
                         <li>

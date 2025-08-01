@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import BookModel from "../../models/BookModel";
+import ReviewModel from "../../models/ReviewModel";
 import { SpinnerLoading } from "../Utils/SpinnerLoading";
 import { StarsReview } from "../Utils/StarsReview";
 import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
-import ReviewModel from "../../models/ReviewModel";
 import { LatestReviews } from "./LatestReviews";
+import ReviewRequestModel from "../../models/ReviewRequestModel";
 import { useAuth0 } from "@auth0/auth0-react";
 import { get } from "http";
-import ReviewRequestModel from "../../models/ReviewRequestModel";
 
 export const BookCheckoutPage = () => {
 
@@ -34,6 +34,7 @@ export const BookCheckoutPage = () => {
     const [isLoadingBookCheckedOut, setIsLoadingBookCheckedOut] = useState(true);
 
     const bookId = (window.location.pathname).split('/')[2];
+
 
     // Use effect for Fetch a book
     useEffect(() => {
@@ -91,7 +92,7 @@ export const BookCheckoutPage = () => {
             for (const key in responseData) {
                 loadedReviews.push({
                     id: responseData[key].id,
-                    userEmail: responseData[key].userEmail,   //variables coming from back-end
+                    userEmail: responseData[key].userEmail,   // variables coming from back-end
                     date: responseData[key].date,
                     rating: responseData[key].rating,
                     book_id: responseData[key].bookId,
@@ -121,9 +122,11 @@ export const BookCheckoutPage = () => {
     useEffect(() => {
         const fetchUserReviewBook = async () => {
             if (isAuthenticated) {
-                // const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
                 const accessToken = await getAccessTokenSilently();
                 const url = `http://localhost:8080/api/reviews/secure/user/book?bookId=${bookId}`;
+
+                // Kontrolli kas token eksisteerib ja näeb välja korrektne
+                // console.log("AccessToken:", accessToken); 
 
                 const requestOptions = {
                     method: 'GET',
@@ -134,9 +137,10 @@ export const BookCheckoutPage = () => {
                 };
 
                 const userReview = await fetch(url, requestOptions);
-                if (!userReview.ok) {
-                    throw new Error('Something went wrong');
-                }
+                // console.log("UserReview:", userReview);
+                // if (!userReview.ok) {
+                //     throw new Error('Something went wrong');
+                // }
                 const userReviewResponseJson = await userReview.json();
                 setIsReviewLeft(userReviewResponseJson);
             }
@@ -148,6 +152,7 @@ export const BookCheckoutPage = () => {
         })
     }, [bookId, isAuthenticated, getAccessTokenSilently]);
 
+    // Use effect for Current loans count
     useEffect(() => {
         const fetchUserCurrentLoansCount = async () => {
             if (isAuthenticated) {
@@ -160,6 +165,7 @@ export const BookCheckoutPage = () => {
                         'Content-Type': 'application/json'
                      }
                 };
+
                 const currentLoansCountResponse = await fetch(url, requestOptions);
                 if (!currentLoansCountResponse.ok)  {   // check if it's not ok
                     throw new Error('Something went wrong!');
@@ -175,10 +181,10 @@ export const BookCheckoutPage = () => {
         })
     }, [isAuthenticated, getAccessTokenSilently, isCheckedOut]);
 
+    // Use effect for Checked out book
     useEffect(() => {
         const fetchUserCheckedOutBook = async () => {
             if (isAuthenticated) {
-                // const url = `http://localhost:8080/api/books/secure/ischeckedout/byuser/?bookId=${bookId}`;
                 const accessToken = await getAccessTokenSilently();
                 const url = `http://localhost:8080/api/books/secure/ischeckedout/byuser?bookId=${bookId}`;
 
@@ -189,8 +195,8 @@ export const BookCheckoutPage = () => {
                         'Content-Type': 'application/json'
                     }
                 };
+                
                 const bookCheckedOut = await fetch(url, requestOptions);
-
                 if (!bookCheckedOut.ok) {
                     throw new Error('Something went wrong!');
                 }
@@ -223,7 +229,6 @@ export const BookCheckoutPage = () => {
     }
     
     async function checkoutBook() {
-        // const url = `http://localhost:8080/api/books/secure/checkout/?bookId=${book?.id}`;
         const accessToken = await getAccessTokenSilently();
         const url = `http://localhost:8080/api/books/secure/checkout?bookId=${book?.id}`;
 
@@ -292,6 +297,7 @@ export const BookCheckoutPage = () => {
                     <CheckoutAndReviewBox book={book} mobile={false} currentLoansCount={currentLoansCount} 
                         isAuthenticated={isAuthenticated} isCheckedOut={isCheckedOut} 
                         checkoutBook={checkoutBook} isReviewLeft={isReviewLeft} submitReview={submitReview}/>
+                        {/* Mapping a pointer to that function */}
                 </div>
                 <hr/>
                 <LatestReviews reviews={reviews} bookId={book?.id} mobile={false}/>

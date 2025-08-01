@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 
 export const Heros = () => {
 
-    const { isAuthenticated } = useAuth0();
+    const { isAuthenticated, loginWithRedirect } = useAuth0();
+
+    const handleLogin = () => {
+        loginWithRedirect();
+        window.location.assign("/");
+    };
 
     return (
         <div>
@@ -24,7 +29,10 @@ export const Heros = () => {
                                 <Link type='button' className='btn main-color btn-lg text-white'
                                     to='search'>Explore top books </Link>
                                 :
-                                <Link className='btn main-color btn-lg text-white' to='/login'>Sign up</Link>
+                                <button className='btn main-color btn-lg text-white' onClick={handleLogin}>
+                                    Sign up
+                                </button>
+                                // <Link className='btn main-color btn-lg text-white' to='/login'>Sign up</Link>
                             }  
                         </div>
                     </div>
@@ -36,7 +44,7 @@ export const Heros = () => {
                             <p className='lead'>
                                 Try to check in daily as our collection is always changing! 
                                 We work nonstop to provide the most accurate book selection possible 
-                                for our Luv 2 Read students! We are diligent about our book selection 
+                                for our enthusiastic reading students! We are diligent about our book selection 
                                 and our books are always going to be our 
                                 top priority.
                             </p>
@@ -47,6 +55,7 @@ export const Heros = () => {
                     </div>
                 </div>
             </div>
+
             {/* Mobile Heros view */}
             <div className='d-lg-none'>
                 <div className='container'>
@@ -63,7 +72,10 @@ export const Heros = () => {
                                 <Link type='button' className='btn main-color btn-lg text-white'
                                     to='search'>Explore top books</Link>
                                 :
-                                <Link className='btn main-color btn-lg text-white' to='/login'>Sign up</Link>
+                                <button className='btn main-color btn-lg text-white' onClick={handleLogin}>
+                                    Sign up
+                                </button> 
+                                // <Link className='btn main-color btn-lg text-white' to='/login'>Sign up</Link>
                             }
                         </div>
                     </div>
@@ -74,7 +86,7 @@ export const Heros = () => {
                             <p className='lead'>
                                 Try to check in daily as our collection is always changing! 
                                 We work nonstop to provide the most accurate book selection possible 
-                                for our Luv 2 Read students! We are diligent about our book selection 
+                                for our enthusiastic reading students! We are diligent about our book selection 
                                 and our books are always going to be our 
                                 top priority.
                             </p>

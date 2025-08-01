@@ -13,5 +13,6 @@ public class ShelfCurrentLoansResponse {
 
     // Setting two properties
     private Book book;
+
     private int daysLeft;
 }

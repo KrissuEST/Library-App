@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 @Data
 public class History {
 
-    public History(){}   // Default constructor
+    public History(){}   // Empty default constructor
 
     public History(String userEmail, String checkoutDate, String returnedDate, String title,
                    String author, String description, String img) {

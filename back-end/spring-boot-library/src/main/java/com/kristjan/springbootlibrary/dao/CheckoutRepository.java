@@ -12,11 +12,7 @@ public interface CheckoutRepository extends JpaRepository<Checkout, Long> {
 
     Checkout findByUserEmailAndBookId(String userEmail, Long bookId);
 
-    // How many checkouts user have all together about number of items
-
+    // How many checkouts user have all together, complete size of number of items
+    // that user have checked out.
     List<Checkout> findBooksByUserEmail(String userEmail);
-
-    @Modifying
-    @Query("delete from Checkout where book_id in :book_id")
-    void deleteAllByBookId(@Param("book_id") Long bookId);
 }
