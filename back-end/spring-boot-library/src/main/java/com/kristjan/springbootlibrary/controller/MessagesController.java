@@ -22,7 +22,8 @@ public class MessagesController {
     @PostMapping("/secure/add/message")
     public void postMessage(@AuthenticationPrincipal Jwt jwt,
                             @RequestBody Message messageRequest) {
-        String userEmail = jwt.getClaim("email");
+        String userEmail = jwt.getClaim("https://luv2code-react-library.com/email");
+//        String userEmail = jwt.getClaim("email");
         messagesService.postMessage(messageRequest, userEmail);
     }
 }

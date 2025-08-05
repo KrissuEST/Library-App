@@ -26,14 +26,16 @@ public class BookController {
     public List<ShelfCurrentLoansResponse> currentLoans(@AuthenticationPrincipal Jwt jwt)
             throws Exception
     {
-        String userEmail = jwt.getClaim("email");
+        String userEmail = jwt.getClaim("https://luv2code-react-library.com/email");
+//        String userEmail = jwt.getClaim("email");
         return bookService.currentLoans(userEmail);
     }
 
     // Get endpoint
     @GetMapping("/secure/currentloans/count")
     public int currentLoansCount(@AuthenticationPrincipal Jwt jwt) {
-        String userEmail = jwt.getClaim("email");
+        String userEmail = jwt.getClaim("https://luv2code-react-library.com/email");
+//        String userEmail = jwt.getClaim("email");
         return bookService.currentLoansCount(userEmail);
     }
 
@@ -41,8 +43,9 @@ public class BookController {
     @GetMapping("/secure/ischeckedout/byuser")
     public Boolean checkoutBookByUser(@AuthenticationPrincipal Jwt jwt,
                                       @RequestParam Long bookId) {
-        // We are grabbing the token and passing it into extraction
-        String userEmail = jwt.getClaim("email");
+        // We are grabbing the token and passing it into
+        String userEmail = jwt.getClaim("https://luv2code-react-library.com/email");
+//        String userEmail = jwt.getClaim("email");
         return bookService.checkoutBookByUser(userEmail, bookId);
     }
 
@@ -50,21 +53,24 @@ public class BookController {
     @PutMapping("/secure/checkout")
     public Book checkoutBook (@AuthenticationPrincipal Jwt jwt,
                               @RequestParam Long bookId) throws Exception {
-        String userEmail = jwt.getClaim("email");
+        String userEmail = jwt.getClaim("https://luv2code-react-library.com/email");
+//        String userEmail = jwt.getClaim("email");
         return bookService.checkoutBook(userEmail, bookId);
     }
 
     @PutMapping("/secure/return")
     public void returnBook(@AuthenticationPrincipal Jwt jwt,
                            @RequestParam Long bookId) throws Exception {
-        String userEmail = jwt.getClaim("email");
+        String userEmail = jwt.getClaim("https://luv2code-react-library.com/email");
+//        String userEmail = jwt.getClaim("email");
         bookService.returnBook(userEmail, bookId);
     }
 
     @PutMapping("/secure/renew/loan")
     public void renewLoan(@AuthenticationPrincipal Jwt jwt,
                           @RequestParam Long bookId) throws Exception {
-        String userEmail = jwt.getClaim("email");
+        String userEmail = jwt.getClaim("https://luv2code-react-library.com/email");
+//        String userEmail = jwt.getClaim("email");
         bookService.renewLoan(userEmail, bookId);
     }
 }

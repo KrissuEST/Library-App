@@ -21,7 +21,8 @@ public class ReviewController {
     @GetMapping("/secure/user/book")
     public Boolean reviewBookByUser(@AuthenticationPrincipal Jwt jwt,
                                     @RequestParam Long bookId) throws Exception {
-        String userEmail = jwt.getClaim("email");
+        String userEmail = jwt.getClaim("https://luv2code-react-library.com/email");
+//        String userEmail = jwt.getClaim("email");
         if (userEmail == null) {
             throw new Exception("User email is missing");
         }
@@ -31,7 +32,8 @@ public class ReviewController {
     @PostMapping("/secure")
     public void postReview(@AuthenticationPrincipal Jwt jwt,
                            @RequestBody ReviewRequest reviewRequest) throws Exception {
-        String userEmail = jwt.getClaim("email");
+        String userEmail = jwt.getClaim("https://luv2code-react-library.com/email");
+//        String userEmail = jwt.getClaim("email");
         if (userEmail == null) {
             throw new Exception("User email is missing");
         }

@@ -7,7 +7,7 @@ import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
 import { LatestReviews } from "./LatestReviews";
 import ReviewRequestModel from "../../models/ReviewRequestModel";
 import { useAuth0 } from "@auth0/auth0-react";
-import { get } from "http";
+// import { get } from "http";
 
 export const BookCheckoutPage = () => {
 
@@ -125,9 +125,8 @@ export const BookCheckoutPage = () => {
                 const accessToken = await getAccessTokenSilently();
                 const url = `http://localhost:8080/api/reviews/secure/user/book?bookId=${bookId}`;
 
-                // Kontrolli kas token eksisteerib ja näeb välja korrektne
+                // Check if token exists and looks correct
                 // console.log("AccessToken:", accessToken); 
-
                 const requestOptions = {
                     method: 'GET',
                     headers: {
@@ -138,9 +137,9 @@ export const BookCheckoutPage = () => {
 
                 const userReview = await fetch(url, requestOptions);
                 // console.log("UserReview:", userReview);
-                // if (!userReview.ok) {
-                //     throw new Error('Something went wrong');
-                // }
+                if (!userReview.ok) {
+                    throw new Error('Something went wrong');
+                }
                 const userReviewResponseJson = await userReview.json();
                 setIsReviewLeft(userReviewResponseJson);
             }
