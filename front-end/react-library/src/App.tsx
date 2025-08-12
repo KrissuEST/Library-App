@@ -13,6 +13,7 @@ import { MessagesPage } from './layouts/MessagesPage/MessagesPage';
 import { auth0Config } from './lib/auth0Config';
 import LoginPage from './layouts/Authentication/LoginPage';
 import { Auth0Provider, withAuthenticationRequired } from '@auth0/auth0-react';
+import { ManageLibraryPage } from './layouts/ManageLibraryPage/ManageLibraryPage';
 
 
 const Auth0ProviderWithHistory = ({ children }: { children: React.ReactNode }) => {
@@ -68,6 +69,7 @@ export const App = () => {   //We make it to functional component, like all othe
           <Route path='/login' render={() => <LoginPage />} />
           <SecureRoute path='/shelf' component={ShelfPage}/>
           <SecureRoute path='/messages' component={MessagesPage}/>
+          <SecureRoute path='/admin' component={ManageLibraryPage} />
           
         </Switch>
       </div>

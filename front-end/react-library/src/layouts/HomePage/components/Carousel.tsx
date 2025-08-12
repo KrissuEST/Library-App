@@ -16,7 +16,7 @@ export const Carousel = () => {
         // creating API to fetch all books from Spring Boot application
         const fetchBooks = async () => {
 
-            const baseUrl: string = "http://localhost:8080/api/books";
+            const baseUrl: string = `${process.env.REACT_APP_API}/books`;
             const url: string = `${baseUrl}?page=0&size=9`;
             const response = await fetch(url);
 
